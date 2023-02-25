@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         amount: 16.53,
         date: DateTime.now()),
     Transaction(
-        id: 't2',
+        id: 't3',
         title: 'Weekly Grocierys',
         amount: 16000.53,
         date: DateTime.now())
@@ -55,12 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime chosenDate) {
     final newTransaction = Transaction(
-        id: DateTime.now().toString(),
-        title: title,
-        amount: amount,
-        date: DateTime.now());
+      id: DateTime.now().toString(),
+      title: title,
+      amount: amount,
+      date: chosenDate,
+    );
 
     setState(() {
       _userTransaction.add(newTransaction);
@@ -77,6 +78,12 @@ class _MyHomePageState extends State<MyHomePage> {
             behavior: HitTestBehavior.opaque,
           );
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransaction.removeWhere((element) => element.id == id);
+    });
   }
 
   @override
@@ -98,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
             width: double.infinity,
             child: Chart(_recentTransactions),
           ),
-          TransactionList(_userTransaction),
+          TransactionList(_userTransaction, _deleteTransaction),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
